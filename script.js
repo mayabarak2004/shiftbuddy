@@ -391,6 +391,14 @@ function handleJobCreation() {
           if (userStartDate) {
             const parsedStartDate = new Date(userStartDate);
             if (!isNaN(parsedStartDate.getTime())) {
+              // Ensure start date is not in the future
+              const today = new Date();
+              const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+              if (parsedStartDate >= tomorrow) {
+                alert("You cannot enter a date in the future.");
+                return;
+              }
+
               const onward = confirm(
                 `Do you want to update ALL shifts from ${userStartDate} onward?\n\n` +
                 `Click 'OK' to update all shifts from ${userStartDate} onward.\n` +
@@ -408,6 +416,16 @@ function handleJobCreation() {
                 if (userEndDate) {
                   const parsedEndDate = new Date(userEndDate);
                   if (!isNaN(parsedEndDate.getTime())) {
+                    // Ensure end date is not in the future
+                    if (parsedEndDate >= tomorrow) {
+                      alert("You cannot enter a date in the future.");
+                      return;
+                    }
+                    // Ensure end date is chronologically valid
+                    if (parsedEndDate < parsedStartDate) {
+                      alert("End date cannot be before start date.");
+                      return;
+                    }
                     updateMode = 'date-range';
                     cutoffDateStr = userStartDate;
                     cutoffEndDateStr = userEndDate;
@@ -685,6 +703,17 @@ manualShiftForm.addEventListener('submit', (e) => {
   // If end time is before start time, assume it spans midnight (overnight shift)
   if (endDate < startDate) {
     endDate.setDate(endDate.getDate() + 1);
+  }
+
+  // Prevent logging shifts that start or end in the future
+  const now = new Date();
+  if (startDate > now) {
+    alert("You cannot enter a shift starting in the future.");
+    return;
+  }
+  if (endDate > now) {
+    alert("You cannot enter a shift ending in the future.");
+    return;
   }
 
   const elapsedMs = endDate - startDate;
@@ -1001,6 +1030,11 @@ function showToast(message) {
 window.addEventListener('DOMContentLoaded', () => {
   // Load data
   loadAppData();
+
+  // Set maximum date picker value to today to prevent choosing future dates
+  if (manualDate) {
+    manualDate.max = new Date().toISOString().split('T')[0];
+  }
 
   // Initialize Month Picker element to current month
   if (ledgerMonthPicker) {
