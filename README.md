@@ -1,7 +1,7 @@
 # ShiftBuddy | Hourly Pay Tracker & Shift Manager
 
 ShiftBuddy is a lightweight, clean, and 100% local Shift Ledger web application designed to help hourly workers track their jobs, log shifts, and view real-time earnings metrics. 
-
+click here  https://mayabarak2004.github.io/shiftbuddy/
 ## Features
 
 * **Multi-Job Management**: Create, edit, and delete multiple jobs with customized job titles, varying hourly rates, and support for multiple currencies (₪, \$, €, £).
