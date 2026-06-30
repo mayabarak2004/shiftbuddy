@@ -1,0 +1,1152 @@
+/* ==========================================================================
+   ShiftBuddy - Design System & Stylesheet
+   Theme: Succession of Greens (Corporate Modern with a Soft Edge)
+   ========================================================================== */
+
+/* Custom properties representing the core design tokens */
+:root {
+  /* Color System */
+  --color-primary: #003527;              /* Deep Forest Green (Main branding, headers) */
+  --color-primary-container: #064e3b;    /* Dark Olive Green (Active clock background) */
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #b0f0d6;
+  --color-primary-fixed-dim: #95d3ba;
+  
+  --color-secondary: #006c4a;            /* Vibrant Emerald Green (Primary actions) */
+  --color-secondary-container: #82f5c1;  /* Minty Teal Accent */
+  --color-on-secondary-container: #00714e;
+
+  --color-tertiary: #0e3427;
+  --color-tertiary-container: #274b3c;
+  --color-tertiary-fixed: #c3ecd7;       /* Soft Mint (Cards background) */
+  --color-on-tertiary-fixed-variant: #294e3f;
+
+  --color-background: #f8f9fa;           /* Off-white background */
+  --color-surface: #ffffff;              /* Pure white surfaces */
+  --color-surface-dim: #d9dadb;
+  --color-surface-bright: #f8f9fa;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f4f5;
+  --color-surface-container: #edeeef;
+  --color-surface-container-high: #e7e8e9;
+  --color-surface-container-highest: #e1e3e4;
+
+  --color-on-surface: #191c1d;           /* Slate text main */
+  --color-on-surface-variant: #404944;   /* Muted text variant */
+  --color-inverse-surface: #2e3132;
+  --color-inverse-on-surface: #f0f1f2;
+  
+  --color-outline: #707974;              /* Green-grey borders */
+  --color-outline-variant: #bfc9c3;      /* Light border variant */
+  
+  --color-money-green: #10B981;          /* Bright emerald for financial indicators */
+  --color-alert-amber: #F59E0B;          /* Amber for minimum wage alerts */
+  
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* Typography Scale */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Layout & Spacing */
+  --spacing-base-unit: 4px;
+  --spacing-container-padding: 16px;
+  --spacing-stack-gap: 12px;
+  --spacing-section-margin: 24px;
+  --spacing-gutter: 16px;
+
+  /* Border Radius */
+  --rounded-sm: 0.25rem;      /* 4px */
+  --rounded-default: 0.5rem; /* 8px */
+  --rounded-md: 0.75rem;     /* 12px */
+  --rounded-lg: 1rem;        /* 16px */
+  --rounded-xl: 1.5rem;      /* 24px */
+  --rounded-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+/* Typography Utility Classes */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.text-main {
+  color: var(--color-on-surface);
+}
+
+.text-muted {
+  color: var(--color-on-surface-variant);
+  font-size: 14px;
+}
+
+.label-caps {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ==========================================================================
+   Layout Containers
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-container-padding);
+}
+
+/* Header / App Bar */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--color-surface);
+  box-shadow: 0px 4px 15px rgba(0, 53, 39, 0.05);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-stack-gap);
+  text-decoration: none;
+}
+
+.brand-icon {
+  color: var(--color-secondary);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Main Dashboard Wrapper */
+.main-content {
+  margin-top: 88px; /* space for header */
+  flex-grow: 1;
+}
+
+/* Responsive Bento Grid Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  
+  .job-management-section {
+    grid-column: span 7;
+  }
+  
+  .clock-panel-section {
+    grid-column: span 5;
+  }
+  
+  .manual-logger-section {
+    grid-column: span 7;
+  }
+  
+  .stats-section {
+    grid-column: span 5;
+  }
+  
+  .ledger-section {
+    grid-column: span 12;
+  }
+}
+
+/* ==========================================================================
+   Component - Cards
+   ========================================================================== */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-surface-container-high);
+  border-radius: var(--rounded-lg);
+  padding: 24px;
+  box-shadow: 0px 4px 15px rgba(0, 53, 39, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-title-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-title-icon {
+  color: var(--color-secondary);
+  font-size: 20px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Component - Form Controls
+   ========================================================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 480px) {
+  .form-row-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .form-row-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--rounded-default);
+  font-size: 16px;
+  color: var(--color-on-surface);
+  outline: none;
+  transition: border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(0, 108, 74, 0.15);
+  background-color: var(--color-surface);
+}
+
+/* Custom Select Dropdowns */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: 'expand_more';
+  font-family: 'Material Symbols Outlined';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-outline);
+}
+
+select {
+  appearance: none;
+  padding-right: 40px;
+}
+
+/* Button Custom Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--rounded-default);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--color-secondary);
+  color: var(--color-on-primary);
+  box-shadow: 0px 4px 10px rgba(0, 108, 74, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #00563b;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+}
+
+.btn-outline:hover {
+  background-color: rgba(0, 108, 74, 0.05);
+}
+
+.btn-large {
+  padding: 16px 28px;
+  font-size: 18px;
+  border-radius: var(--rounded-md);
+}
+
+/* ==========================================================================
+   Component - Job Selector & Context Switcher
+   ========================================================================== */
+.job-switcher-container {
+  margin-bottom: 8px;
+}
+
+.job-dropdown-selector {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--rounded-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.job-dropdown-selector:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.job-current-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.job-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--rounded-full);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-avatar span {
+  font-size: 24px;
+}
+
+.job-details-text h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-primary);
+}
+
+.job-details-text p {
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+}
+
+.job-arrow {
+  color: var(--color-outline);
+}
+
+/* ==========================================================================
+   Component - Minimum Wage Alert
+   ========================================================================== */
+.alert-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: var(--color-error-container);
+  color: var(--color-on-error-container);
+  border: 1px solid rgba(186, 26, 26, 0.15);
+  border-radius: var(--rounded-default);
+  padding: 14px 16px;
+  font-size: 14px;
+  animation: pulse-border 2s infinite ease-in-out;
+}
+
+.alert-icon {
+  color: var(--color-error);
+  font-size: 20px;
+}
+
+.alert-title {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(186, 26, 26, 0.15); }
+  50% { border-color: rgba(186, 26, 26, 0.4); }
+}
+
+/* ==========================================================================
+   Component - Active Shift Clock Panel
+   ========================================================================== */
+.clock-card {
+  background: radial-gradient(circle at top right, #064e3b 0%, #003527 100%);
+  border: 1px solid rgba(6, 78, 59, 0.3);
+  color: var(--color-on-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.clock-card .card-title-icon,
+.clock-card .card-title {
+  color: var(--color-primary-fixed);
+}
+
+.timer-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-on-primary-container);
+  margin-bottom: 8px;
+}
+
+.timer-readout {
+  font-family: var(--font-family);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
+  margin-bottom: 8px;
+}
+
+.timer-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(6, 78, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 16px;
+  border-radius: var(--rounded-full);
+  margin-bottom: 32px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--rounded-full);
+  background-color: var(--color-money-green);
+}
+
+.status-dot.active {
+  animation: pulse-dot 1.5s infinite;
+}
+
+.timer-status-text {
+  font-size: 13px;
+  color: var(--color-primary-fixed);
+}
+
+.earnings-live-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.earnings-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-money-green);
+}
+
+.earnings-row span {
+  font-size: 24px;
+}
+
+.earnings-amount {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.earnings-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.clock-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-stack-gap);
+  width: 100%;
+}
+
+.clock-actions .btn {
+  flex-direction: column;
+  padding: 20px;
+  height: auto;
+}
+
+.clock-actions .btn span {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.clock-actions .btn-primary {
+  background-color: var(--color-secondary);
+}
+
+.clock-actions .btn-outline {
+  background-color: var(--color-surface);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.clock-actions .btn-outline:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* ==========================================================================
+   Component - Monthly Stats & Bento Summary Cards
+   ========================================================================== */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 480px) {
+  .stats-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-summary-card {
+  padding: 24px;
+  border-radius: var(--rounded-md);
+  border: 1px solid rgba(195, 236, 215, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 150px;
+}
+
+.stat-summary-card.hours {
+  background-color: var(--color-tertiary-fixed);
+  color: var(--color-on-tertiary-fixed-variant);
+}
+
+.stat-summary-card.earnings {
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.stat-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-icon {
+  font-size: 20px;
+  color: var(--color-secondary);
+}
+
+.stat-value-container {
+  margin-top: 16px;
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 40px;
+  color: var(--color-primary);
+}
+
+.stat-subtext {
+  font-size: 13px;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Component - Monthly Ledger Table
+   ========================================================================== */
+.ledger-card {
+  padding: 0; /* Remove padding to make table go edge-to-edge */
+  overflow: hidden;
+}
+
+.ledger-header-panel {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ledger-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ledger-status-icon {
+  color: var(--color-money-green);
+  font-size: 18px;
+}
+
+.ledger-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  padding: 4px 12px;
+  border-radius: var(--rounded-full);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.chip-mint {
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.chip-sage {
+  background-color: var(--color-tertiary-fixed);
+  color: var(--color-on-tertiary-fixed-variant);
+}
+
+/* Scrollable Table Container */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 850px; /* Force minimum size to protect columns on small viewport */
+}
+
+/* Table Header Styles */
+.ledger-table th {
+  background-color: rgba(195, 236, 215, 0.25);
+  color: var(--color-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+/* Table Body Styles */
+.ledger-table td {
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--color-on-surface);
+  border-bottom: 1px solid rgba(191, 201, 195, 0.3);
+}
+
+.ledger-table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.ledger-table tbody tr:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+/* Alternate row shading */
+.ledger-table tbody tr:nth-child(even) {
+  background-color: rgba(248, 249, 250, 0.5);
+}
+
+.ledger-table tbody tr:nth-child(odd) {
+  background-color: var(--color-surface);
+}
+
+/* Formatting for data */
+.td-date {
+  font-family: var(--font-family);
+  font-weight: 600;
+}
+
+.td-mono {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.td-muted-mono {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-on-surface-variant);
+}
+
+.td-pay {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-money-green);
+  text-align: right;
+}
+
+.ledger-table th:last-child {
+  text-align: right;
+}
+
+/* Total Pinned Bottom Row */
+.totals-row {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.totals-row td {
+  padding: 18px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: none;
+}
+
+.totals-row .td-label {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+}
+
+.totals-row .td-mono {
+  color: #ffffff;
+}
+
+.totals-row .td-pay {
+  color: var(--color-secondary-container);
+  font-size: 18px;
+  text-align: right;
+}
+
+/* Table Actions Area */
+.table-actions-panel {
+  padding: 16px 24px;
+  background-color: var(--color-surface-container-low);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.action-buttons .btn {
+  flex: 1;
+}
+
+.info-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-on-surface-variant);
+  font-size: 13px;
+  text-align: center;
+}
+
+.info-banner span {
+  color: var(--color-alert-amber);
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  .table-actions-panel {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .action-buttons {
+    width: auto;
+  }
+}
+
+/* ==========================================================================
+   Utilities & Common Icons
+   ========================================================================== */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+/* Custom Scrollbar for overflow containers */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* Page Footer */
+.footer {
+  margin-top: 40px;
+  padding: 24px 0;
+  text-align: center;
+  border-top: 1px solid rgba(191, 201, 195, 0.2);
+}
+
+.disclaimer-text {
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+/* Ledger Month Picker input style */
+#ledger-month-picker {
+  padding: 6px 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--rounded-default);
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--color-on-surface);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#ledger-month-picker:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(0, 108, 74, 0.15);
+}
+
+/* Delete Button Styles */
+.delete-shift-btn:hover {
+  background-color: var(--color-error-container);
+}
+
+.edit-shift-btn:hover {
+  background-color: var(--color-surface-container-high) !important;
+}
+
+#delete-job-btn:hover {
+  background-color: var(--color-error-container) !important;
+  border-color: var(--color-error) !important;
+}
+
+#edit-job-btn:hover {
+  background-color: var(--color-surface-container-high) !important;
+}
+
+.print-only-header,
+.print-only-footer {
+  display: none;
+}
+
+/* PDF Export Overrides (for html2pdf generation) */
+.is-pdf-export .header,
+.is-pdf-export .job-management-section,
+.is-pdf-export .clock-panel-section,
+.is-pdf-export .manual-logger-section,
+.is-pdf-export .stats-section,
+.is-pdf-export .table-actions-panel,
+.is-pdf-export .ledger-header-panel,
+.is-pdf-export .footer {
+  display: none !important;
+}
+
+.is-pdf-export .print-only-header,
+.is-pdf-export .print-only-footer {
+  display: block !important;
+}
+
+.is-pdf-export .print-only-footer {
+  border-top: 1px solid #bfc9c3 !important;
+  margin-top: 30px !important;
+  padding-top: 12px !important;
+}
+
+.is-pdf-export .ledger-section {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.is-pdf-export .table-container {
+  overflow: visible !important;
+}
+
+.is-pdf-export .ledger-table {
+  min-width: 100% !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+.is-pdf-export .ledger-table th,
+.is-pdf-export .ledger-table td {
+  font-size: 10px !important;
+  padding: 6px 4px !important;
+  border-bottom: 1px solid #bfc9c3 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+.is-pdf-export .ledger-table th {
+  background-color: #f3f4f5 !important;
+  color: #003527 !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #003527 !important;
+}
+
+.is-pdf-export .totals-row {
+  background-color: #003527 !important;
+  color: #ffffff !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.is-pdf-export .totals-row td {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+
+.is-pdf-export .totals-row .td-pay {
+  color: #ffffff !important;
+}
+
+.is-pdf-export .ledger-table th:nth-child(9),
+.is-pdf-export .ledger-table td:nth-child(9) {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Print Stylesheet (Invoice Layout)
+   ========================================================================== */
+@media print {
+  /* Set A4 Portrait print dimensions */
+  @page {
+    size: A4 portrait;
+    margin: 15mm 10mm 15mm 10mm;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    font-size: 10px !important;
+  }
+  
+  /* Hide all interactive components, buttons, and inputs */
+  .header,
+  .job-management-section,
+  .clock-panel-section,
+  .manual-logger-section,
+  .stats-section,
+  .table-actions-panel,
+  .ledger-header-panel,
+  .footer {
+    display: none !important;
+  }
+
+  .print-only-header,
+  .print-only-footer {
+    display: block !important;
+  }
+
+  .print-only-footer {
+    border-top: 1px solid #bfc9c3 !important;
+    margin-top: 30px !important;
+    padding-top: 12px !important;
+  }
+
+  /* Reset margins for printing */
+  .main-content {
+    margin-top: 0 !important;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  
+  /* Format Ledger section for full-page print */
+  .ledger-section {
+    grid-column: span 12 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Ensure the table fills the viewport cleanly without overflow scrollbars */
+  .table-container {
+    overflow: visible !important;
+  }
+
+  .ledger-table {
+    min-width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .ledger-table th,
+  .ledger-table td {
+    font-size: 10px !important;
+    padding: 6px 4px !important;
+    border-bottom: 1px solid #bfc9c3 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+  }
+
+  .ledger-table th {
+    background-color: #f3f4f5 !important;
+    color: #003527 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #003527 !important;
+  }
+
+  .totals-row {
+    background-color: #003527 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .totals-row td {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+  }
+
+  .totals-row .td-pay {
+    color: #ffffff !important;
+  }
+
+  /* Document Footer */
+  .disclaimer-text {
+    font-size: 9px !important;
+    color: #555555 !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide the actions column in printing */
+  .ledger-table th:nth-child(9),
+  .ledger-table td:nth-child(9) {
+    display: none !important;
+  }
+}

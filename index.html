@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShiftBuddy | Hourly Pay Tracker & Shift Manager</title>
+  <!-- Google Fonts: Inter & Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <!-- Link to the custom stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top AppBar Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="brand">
+        <span class="material-symbols-outlined brand-icon">account_balance_wallet</span>
+        <h1 class="brand-title">ShiftBuddy</h1>
+      </a>
+      <div class="header-actions">
+        <!-- Optional profile context or subtle tagline -->
+        <span class="text-muted" style="font-weight: 500; font-size: 13px;">100% Local Shift Ledger</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace Canvas -->
+  <main class="main-content container">
+    <div class="dashboard-grid">
+
+      <!-- ==========================================
+           1. JOB MANAGEMENT HEADER
+           ========================================== -->
+      <section class="job-management-section card">
+        <div class="card-title-area">
+          <span class="material-symbols-outlined card-title-icon">work_outline</span>
+          <h2 class="card-title">Job Management</h2>
+        </div>
+
+        <!-- Switch Active Job Selector Dropdown Context -->
+        <div class="job-switcher-container" style="display: flex; gap: 8px; align-items: flex-end;">
+          <div style="flex-grow: 1;">
+            <label class="label-caps" for="active-job-select">Active Job Context</label>
+            <div class="select-wrapper">
+              <select id="active-job-select">
+                <option value="1" data-currency="$" data-rate="15.50" selected>Server at Cafe ($15.50 / hr)</option>
+                <option value="2" data-currency="₪" data-rate="40.00">Delivery Driver (₪40.00 / hr)</option>
+                <option value="3" data-currency="£" data-rate="12.00">Freelance Tutor (£12.00 / hr)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-outline" id="edit-job-btn" title="Edit Active Job" style="padding: 12px; height: 48px; min-width: 48px; border-radius: var(--rounded-default); display: inline-flex; align-items: center; justify-content: center; transition: background-color var(--transition-fast);">
+            <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+          </button>
+          <button class="btn btn-outline" id="delete-job-btn" title="Delete Active Job" style="padding: 12px; color: var(--color-error); border-color: var(--color-outline-variant); background-color: var(--color-surface); height: 48px; min-width: 48px; border-radius: var(--rounded-default); display: inline-flex; align-items: center; justify-content: center; transition: background-color var(--transition-fast);">
+            <span class="material-symbols-outlined" style="font-size: 20px;">delete_forever</span>
+          </button>
+        </div>
+
+        <!-- Form to Create a Job -->
+        <form id="create-job-form" onsubmit="event.preventDefault();">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="label-caps" for="new-job-title">Job Title</label>
+            <input type="text" id="new-job-title" placeholder="e.g. Lead Barista, Web Developer" required>
+          </div>
+
+          <div class="form-row form-row-3col" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="label-caps" for="new-job-age">User Age</label>
+              <input type="number" id="new-job-age" placeholder="Age" min="1" max="120" value="21" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="label-caps" for="new-job-rate">Hourly Pay</label>
+              <input type="number" id="new-job-rate" placeholder="Rate" step="0.01" min="0" value="10.50" required>
+            </div>
+
+            <div class="form-group">
+              <label class="label-caps" for="new-job-currency">Currency</label>
+              <div class="select-wrapper">
+                <select id="new-job-currency" required>
+                  <option value="₪">₪ (ILS)</option>
+                  <option value="$" selected>$ (USD)</option>
+                  <option value="€">€ (EUR)</option>
+                  <option value="£">£ (GBP)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Placeholder Area for 'Minimum Wage Alert' Message -->
+          <div id="min-wage-alert-container" style="margin-bottom: 16px;">
+            <!-- Alert will be rendered here dynamically. Included static boilerplate mockup below -->
+            <div class="alert-container" id="mock-alert">
+              <span class="material-symbols-outlined alert-icon">warning</span>
+              <div>
+                <p class="alert-title">Minimum Wage Alert</p>
+                <p>The current minimum wage for age 21+ is $11.44. Please check local regulations.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="flex-grow: 1;" type="submit" id="create-job-submit-btn">
+              <span class="material-symbols-outlined" id="create-job-icon">add</span> <span id="create-job-text">Create Job</span>
+            </button>
+            <button class="btn btn-outline" type="button" id="cancel-edit-job-btn" style="display: none; height: 48px; justify-content: center; align-items: center;">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ==========================================
+           2. ACTIVE SHIFT PUNCH CLOCK
+           ========================================== -->
+      <section class="clock-panel-section card clock-card">
+        <div class="timer-label">Current Shift Duration</div>
+        <div class="timer-readout" id="live-timer">00:00:00</div>
+        
+        <div class="timer-status-badge">
+          <span class="status-dot" id="status-indicator"></span>
+          <span class="timer-status-text" id="status-text">Ready to clock in</span>
+        </div>
+
+        <div class="clock-actions" style="margin-bottom: 24px;">
+          <!-- Clock In Button -->
+          <button class="btn btn-primary btn-large" id="clock-in-btn">
+            <span class="material-symbols-outlined">play_circle</span>
+            Clock In
+          </button>
+          
+          <!-- Clock Out Button -->
+          <button class="btn btn-outline btn-large" id="clock-out-btn" disabled style="opacity: 0.5; pointer-events: none;">
+            <span class="material-symbols-outlined">stop_circle</span>
+            Clock Out
+          </button>
+        </div>
+
+        <!-- Real-Time Running Earned Tracker -->
+        <div class="earnings-live-container">
+          <div class="earnings-row">
+            <span class="material-symbols-outlined">payments</span>
+            <div class="earnings-amount" id="earned-tracker">Earned: $0.00</div>
+          </div>
+          <p class="earnings-sub" id="shift-rate-meta">Base Rate: $15.50/hr</p>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           3. MANUAL LOGGER & MONTHLY STATS
+           ========================================== -->
+      <section class="manual-logger-section card">
+        <div class="card-title-area">
+          <span class="material-symbols-outlined card-title-icon">history_edu</span>
+          <h2 class="card-title">Log Manual Shift</h2>
+        </div>
+        
+        <form id="manual-shift-form" onsubmit="event.preventDefault();">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="label-caps" for="manual-date">Shift Date</label>
+            <input type="date" id="manual-date" required>
+          </div>
+
+          <div class="form-row form-row-2col" style="margin-bottom: 24px;">
+            <div class="form-group">
+              <label class="label-caps" for="manual-start-time">Start Time</label>
+              <input type="time" id="manual-start-time" required>
+            </div>
+            <div class="form-group">
+              <label class="label-caps" for="manual-end-time">End Time</label>
+              <input type="time" id="manual-end-time" required>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="flex-grow: 1;" type="submit" id="save-manual-btn">
+              <span class="material-symbols-outlined" id="save-manual-icon">save</span> <span id="save-manual-text">Save Manual Shift</span>
+            </button>
+            <button class="btn btn-outline" type="button" id="cancel-edit-btn" style="display: none; height: 48px; justify-content: center; align-items: center;">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Monthly Stats Panel -->
+      <section class="stats-section stats-cards-grid">
+        <!-- Stat A: Total Hours Worked -->
+        <div class="stat-summary-card hours">
+          <div class="stat-header">
+            <span class="stat-title">Total Hours Worked</span>
+            <span class="material-symbols-outlined stat-icon">schedule</span>
+          </div>
+          <div class="stat-value-container">
+            <div class="stat-value" id="stat-total-hours">142.5h</div>
+            <div class="stat-subtext">Accumulated This Month</div>
+          </div>
+        </div>
+
+        <!-- Stat B: Total Monthly Earnings -->
+        <div class="stat-summary-card earnings">
+          <div class="stat-header">
+            <span class="stat-title">Total Earnings</span>
+            <span class="material-symbols-outlined stat-icon">payments</span>
+          </div>
+          <div class="stat-value-container">
+            <div class="stat-value" id="stat-total-earnings">$5,700.00</div>
+            <div class="stat-subtext">Estimated Gross Pay</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           4. MONTHLY LEDGER TABLE
+           ========================================== -->
+      <section class="ledger-section card ledger-card">
+        <!-- Print-only document header -->
+        <div class="print-only-header">
+          <h1 style="font-size: 24px; color: #003527; margin: 0 0 4px 0; font-family: var(--font-family); font-weight: 700;">ShiftBuddy Reconciled Paycheck Report</h1>
+          <p style="font-size: 13px; color: #404944; margin: 0 0 16px 0; font-family: var(--font-family);">
+            Generated: <span id="print-date">-</span>
+          </p>
+          <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #003527; padding-bottom: 8px; margin-bottom: 20px;">
+            <div>
+              <strong style="font-size: 11px; color: #003527; text-transform: uppercase; letter-spacing: 0.5px;">Job Profile</strong>
+              <div id="print-job-title" style="font-size: 16px; font-weight: 600; color: #191c1d; margin-top: 2px;">-</div>
+            </div>
+            <div style="text-align: right;">
+              <strong style="font-size: 11px; color: #003527; text-transform: uppercase; letter-spacing: 0.5px;">Statement Period</strong>
+              <div id="print-statement-period" style="font-size: 16px; font-weight: 600; color: #191c1d; margin-top: 2px;">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Control Panel -->
+        <div class="ledger-header-panel" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div class="ledger-status" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="material-symbols-outlined ledger-status-icon">verified</span>
+              <span class="text-main" style="font-weight: 600;">Monthly Paycheck Reconciler</span>
+            </div>
+            <!-- Dynamic Month Selection -->
+            <div class="ledger-filter-month" style="margin: 0;">
+              <input type="month" id="ledger-month-picker">
+            </div>
+          </div>
+          <div class="ledger-chips">
+            <span class="chip chip-mint" id="ledger-badge-shifts">22 Shifts</span>
+            <span class="chip chip-sage" id="ledger-badge-hours">176 Hours</span>
+          </div>
+        </div>
+
+        <!-- Spreadsheet Wrapper -->
+        <div class="table-container">
+          <table class="ledger-table" id="ledger-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Enter Time</th>
+                <th>End Time</th>
+                <th>Hourly Rate</th>
+                <th>Regular Hours</th>
+                <th>Extra (125%)</th>
+                <th>Extra (150%)</th>
+                <th>Day's Total Pay</th>
+                <th style="width: 80px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1 -->
+              <tr>
+                <td class="td-date">Oct 01, 2023</td>
+                <td class="td-muted-mono">08:00 AM</td>
+                <td class="td-muted-mono">05:00 PM</td>
+                <td class="td-mono">8.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-pay">$220.00</td>
+              </tr>
+              <!-- Row 2 -->
+              <tr>
+                <td class="td-date">Oct 02, 2023</td>
+                <td class="td-muted-mono">08:00 AM</td>
+                <td class="td-muted-mono">07:30 PM</td>
+                <td class="td-mono">8.00 h</td>
+                <td class="td-mono">2.00 h</td>
+                <td class="td-mono">1.50 h</td>
+                <td class="td-pay">$315.50</td>
+              </tr>
+              <!-- Row 3 -->
+              <tr>
+                <td class="td-date">Oct 03, 2023</td>
+                <td class="td-muted-mono">09:00 AM</td>
+                <td class="td-muted-mono">06:00 PM</td>
+                <td class="td-mono">8.00 h</td>
+                <td class="td-mono">1.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-pay">$247.50</td>
+              </tr>
+              <!-- Row 4 -->
+              <tr>
+                <td class="td-date">Oct 04, 2023</td>
+                <td class="td-muted-mono">08:30 AM</td>
+                <td class="td-muted-mono">05:30 PM</td>
+                <td class="td-mono">8.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-pay">$220.00</td>
+              </tr>
+              <!-- Row 5 -->
+              <tr>
+                <td class="td-date">Oct 05, 2023</td>
+                <td class="td-muted-mono">08:00 AM</td>
+                <td class="td-muted-mono">05:00 PM</td>
+                <td class="td-mono">8.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-mono">0.00 h</td>
+                <td class="td-pay">$220.00</td>
+              </tr>
+            </tbody>
+            <!-- Pinned Highlighted Totals Row -->
+            <tfoot>
+              <tr class="totals-row">
+                <td colspan="3" class="td-label">TOTALS</td>
+                <td class="td-mono">40.00 h</td>
+                <td class="td-mono">3.00 h</td>
+                <td class="td-mono">1.50 h</td>
+                <td class="td-pay">$1,223.00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Footer Actions Panel -->
+        <div class="table-actions-panel">
+          <div class="info-banner">
+            <span class="material-symbols-outlined">info</span>
+            <p>Export options copy audit logs local to browser storage (IndexedDB / LocalStorage).</p>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-outline" id="export-pdf-btn">
+              <span class="material-symbols-outlined">download</span> Export PDF
+            </button>
+            <button class="btn btn-outline" id="share-ledger-btn">
+              <span class="material-symbols-outlined">share</span> Share Ledger
+            </button>
+          </div>
+        </div>
+        <!-- Print-only disclaimer footer -->
+        <div class="print-only-footer">
+          <p class="disclaimer-text" style="font-size: 9px !important; color: #555555 !important; margin: 0; line-height: 1.4 !important; text-align: center !important;">
+            Disclaimer: This information is based only on the user's inputs and usage, and it is not to be used as a formal document.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Page Footer -->
+  <footer class="footer container">
+    <p class="disclaimer-text">
+      Disclaimer: This information is based only on the user's inputs and usage, and it is not to be used as a formal document.
+    </p>
+  </footer>
+
+  <!-- html2pdf library for client-side PDF generation & downloading -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- ShiftBuddy Data & Logic Script Layer -->
+  <script src="script.js"></script>
+</body>
+</html>
