@@ -1,48 +1,31 @@
-# ShiftBuddy | Hourly Pay Tracker & Shift Manager
+# ShiftBuddy
 
-ShiftBuddy is a lightweight, clean, and 100% local Shift Ledger web application designed to help hourly workers track their jobs, log shifts, and view real-time earnings metrics. 
-click here  https://mayabarak2004.github.io/shiftbuddy/
-## Features
+A client-side shift management ledger and paycheck reconciliation application. It empowers hourly shift workers, student employees, and freelancers to independently log hours, track multi-job pay tracks, automatically calculate daily overtime legal premiums, and export verified financial audit logs.
 
-* **Multi-Job Management**: Create, edit, and delete multiple jobs with customized job titles, varying hourly rates, and support for multiple currencies (₪, \$, €, £).
-* **Smart Minimum Wage Alert**: Dynamically verifies entered pay scales against regional rules based on user age to prevent underpayment compliance issues.
-* **Live Punch Clock & Timer**: Visual, real-time stopwatch keeping precise track of shift duration and dynamic ongoing earnings down to the exact second.
-* **Manual Log Framework**: Back-up capability to register historic shift entry structures with manual date inputs.
-* **Privacy-First Architecture**: 100% client-side execution keeping data isolated entirely in the browser storage ecosystem.
+## What it does
 
----
+* **Bento-Grid Multi-Job Hub:** Configure and switch dynamically between separate job profiles, each possessing its own tracking context, user age parameters, custom hourly pay scales, and independent base currencies (`₪`, `$`, `€`, `£`).
+* **Crash-Proof Live Punch Clock:** A stateless, timestamp-anchored active tracker that computes working duration and running shift earnings down to the exact second. The state recovers instantly and resumes tracking seamlessly across browser restarts, refreshes, or device power cutouts.
+* **Israeli Labor Law Overtime Matrix:** An embedded logical math engine that automatically segments shifts into regular hours (up to 8.6 hours), Tier-1 overtime (the next 2 hours paid at 125%), and Tier-2 overtime (any duration past 10.6 hours paid at 150%). 
+* **Automatic Shabbat Flat-Rate Rule:** Intelligently triggers a statutory 150% flat-rate calculation on all logged hours if a shift falls inside the Israeli Shabbat window (Friday evenings starting at 17:00 through Saturday night).
+* **Dynamic Age-Based Wage Validator:** A real-time auditing system that cross-references user age and selected currency bounds to flash warning banners if an entered rate falls below statutory regional minimum wage structures (e.g., minor vs. adult minimums).
+* **Historical Month Ledger & Totals:** A spreadsheet-style monthly audit interface that organizes shifts chronologically, displaying explicit clock-in/out stamps, overtime tiers, and a pinned bottom totals calculator.
+* **Interactive Ledger Management:** Inline operational controls that enable the manual logging of past shifts, updating active job metrics with historical back-dated recalculation choices, and fine-tuning individual historical rows.
+* **Reconciled Document Export Suite:** Features a dual-channel sharing system that lets you download a pixel-perfect, printer-formatted PDF copy using client-side `html2pdf.js` processing, or quickly push a clean text summary ledger payload right to your clipboard via the Web Share API.
 
-## Technical Stack
+## Live link
 
-* **Markup**: Semantic HTML5 with Google Material Symbols
-* **Styling**: Modern CSS3 using modern Grid layouts, Custom Variables (CSS variables), Flexbox structures, and adaptive design architecture
-* **Typography**: Inter Font Ecosystem
+👉 [https://mayabarak2004.github.io/shiftbuddy/](https://mayabarak2004.github.io/shiftbuddy/)
 
----
+## How to use it
 
-## File Structure
+1.  **Onboard a Profile:** Fill out the **Job Management** form by adding a Job Title, your Age, your Hourly Pay, and your Base Currency, then click **Create Job**.
+2.  **Log Your Shifts:** Select your active job profile from the context dropdown menu. Click **Clock In** when your shift begins to initiate the real-time tracker, or enter the details into the **Log Manual Shift** module to back-date a past day.
+3.  **Audit and Export:** Pick your target calendar month using the built-in month filter to view your compiled table. Use the **Export PDF** or **Share Ledger** utilities at the bottom of the ledger card to download your printable audit summary report.
 
-```text
-├── index.html   # Main dashboard skeleton markup
-├── style.css    # Clean theme parameters, variables & typography rules 
-└── script.js    # Client side shift ledger computation logic
-```
+## Known limitations
 
----
-
-## Quick Start
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com
-   ```
-2. **Launch the platform:**
-   Open `index.html` directly in any web browser. No compilation, local servers, or database instances required.
-
----
-
-## Usage Workflow
-
-1. **Set Up Jobs**: Input your unique Job details, user age, and local currency rates in the **Job Management** module.
-2. **Clock In**: Click **Clock In** as your shift starts. The running readout tracker reflects cumulative earnings automatically.
-3. **Finish Shift**: Tap **Clock Out** to conclude data tracking sessions or switch job context headers interchangeably.
+* **Browser Storage Dependent:** Data persistence relies entirely on client-side browser space (`localStorage`). Clearing your browser history, clear-wiping cookies, or using aggressive machine cleaners will permanently delete all stored jobs and shift tracking logs.
+* **No Multi-Device Synchronization:** Because data lives completely localized in individual web caches, shift entries, and job listings do not sync across different platforms (e.g., your logs will not automatically transfer if you switch between a desktop laptop and a mobile device).
+* **Localized Overtime Architecture:** The overtime premium tier thresholds (8.6h base limit, 125% and 150% multipliers) are hardcoded to standard daily frameworks. They do not automatically scale to unique union bargaining agreements, split split-shifts, or complex weekly global rolling contracts.
+* **Informational Purposes Only:** As displayed in the application disclaimer banners, all statistics and tables are derived entirely from manual user entries and are intended for personal audit verification and ledger tracking, rather than acting as a legally binding corporate document.
